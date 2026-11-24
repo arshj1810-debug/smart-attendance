@@ -10,7 +10,8 @@ pg.types.setTypeParser(1082, (v) => v);
 pg.types.setTypeParser(20, (v) => Number(v));
 pg.types.setTypeParser(1700, (v) => Number(v));
 
-export const pool = new Pool({ connectionString: config.databaseUrl, max: 10, idleTimeoutMillis: 30000, connectionTimeoutMillis: 8000 });
+const ssl = config.dbSsl ? { rejectUnauthorized: false } : undefined; // hosted databases need DATABASE_SSL=true
+export const pool = new Pool({ connectionString: config.databaseUrl, ssl, max: 10, idleTimeoutMillis: 30000, connectionTimeoutMillis: 8000 });
 pool.on('error', (e) => console.error('[db] idle client error:', e.message));
 
 export const query = (text, params) => pool.query(text, params);
@@ -38,7 +39,7 @@ export async function ensureDatabase() {
     if (e.code !== '3D000') throw e;               // 3D000 = database does not exist
   }
   const admin = new URL(config.databaseUrl); admin.pathname = '/postgres';
-  const c = new Client({ connectionString: admin.toString() });
+  const c = new Client({ connectionString: admin.toString(), ssl });
   await c.connect();
   try { await c.query(`CREATE DATABASE "${name.replace(/"/g, '""')}"`); console.log(`[db] created database "${name}"`); }
   finally { await c.end(); }

@@ -9,6 +9,7 @@ export const config = {
   seedDemo: bool(process.env.SEED_DEMO, true),
   selfRegistration: bool(process.env.ALLOW_SELF_REGISTRATION, false),
   corsOrigins: (process.env.CORS_ORIGINS || '').split(',').map((s) => s.trim()).filter(Boolean),
+  dbSsl: bool(process.env.DATABASE_SSL, false),
   qrTtlMs: 2000,
   qrGraceMs: 1500,
   editWindowMs: 24 * 3600000,
