@@ -1,0 +1,16 @@
+{
+  "name": "smart-attendance-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Smart Attendance Management System with Analytics and Real-Time Monitoring (React + Express + PostgreSQL + Socket.IO)",
+  "scripts": {
+    "setup": "npm --prefix backend install && npm --prefix frontend install",
+    "dev": "concurrently -n api,web -c blue,green \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix backend start",
+    "seed": "npm --prefix backend run seed",
+    "reset": "npm --prefix backend run reset",
+    "smoke": "node backend/scripts/smoke.mjs"
+  },
+  "devDependencies": { "concurrently": "^8.2.2" }
+}
